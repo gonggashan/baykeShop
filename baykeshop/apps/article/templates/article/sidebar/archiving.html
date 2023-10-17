@@ -1,0 +1,17 @@
+<div class="box">
+    <h1 class="is-size-5 has-text-weight-bold">文章归档</h1>
+    <div class="dropdown-divider"></div>
+    <aside class="menu">
+        <ul class="menu-list">
+            {% for date in dates %}
+            <li>
+                <a href="{% url 'baykearticle:archiv-list' date.year date.month %}" 
+                    class="{% if year == date.year and month == date.month %} is-active {% endif %}">
+                    {{ date }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        
+    </aside>
+</div>

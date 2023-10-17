@@ -1,0 +1,79 @@
+<div class="box is-radiusless is-shadowless is-marginless">
+    <div class="is-flex is-flex-wrap-wrap">
+        <a href="{% url 'shop:goods' %}" 
+            class="pr-2 {% if '全部商品' == title %}has-text-weight-bold has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+            全部
+        </a>
+        {% for cate in parent_cates %}
+            <a href="{% url 'shop:cate-detail' cate.id %}" 
+                class="pr-2 {% if title == cate.name or cate.id == object.parent.id %}has-text-weight-bold has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+</div>
+<div class="box is-radiusless">
+    <div class="is-flex is-flex-direction-column">
+        <div class="is-flex is-flex-wrap-wrap">
+            <span class="has-text-grey-light">分类：</span>
+            {% for subcate in sub_cates %}
+            <a href="{% url 'shop:cate-detail' subcate.id %}" 
+                class="pr-3 {% if title == subcate.name or subcate.id == object.id %}has-text-weight-bold has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">{{ subcate.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="is-flex is-flex-wrap-wrap">
+            <span class="has-text-grey-light">排序：</span>
+            {% if request.GET.ordering == '-price' %}
+            <a href="{{ request.path_info }}?ordering=price" 
+                class="pr-3 {% if 'price' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                价格
+                {% if request.GET.ordering == '-price' %}
+                <span class="icon"><i class="mdi mdi-arrow-down-bold-outline"></i></span>
+                {% endif %}
+            </a>
+            {% else %}
+            <a href="{{ request.path_info }}?ordering=-price" 
+                class="pr-3 {% if 'price' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                价格
+                {% if request.GET.ordering == 'price' %}
+                <span class="icon"><i class="mdi mdi-arrow-up-bold-outline"></i></span>
+                {% endif %}
+            </a>
+            {% endif %}
+
+            {% if request.GET.ordering == '-sales' %}
+            <a href="{{ request.path_info }}?ordering=sales" 
+                class="pr-3 {% if 'sales' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                销量
+                {% if request.GET.ordering == '-sales' %}
+                <span class="icon"><i class="mdi mdi-arrow-down-bold-outline"></i></span>
+                {% endif %}
+            </a>
+            {% else %}
+            <a href="{{ request.path_info }}?ordering=-sales" 
+                class="pr-3 {% if 'sales' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                销量
+                {% if request.GET.ordering == 'sales' %}
+                <span class="icon"><i class="mdi mdi-arrow-up-bold-outline"></i></span>
+                {% endif %}
+            </a>
+            {% endif %}
+
+            {% if request.GET.ordering == '-add_date' %}
+                <a href="{{ request.path_info }}?ordering=add_date" 
+                    class="pr-3 {% if 'add_date' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                    上架时间
+                    {% if request.GET.ordering == '-add_date' %}
+                    <span class="icon"><i class="mdi mdi-arrow-down-bold-outline"></i></span>
+                    {% endif %}
+                </a>
+            {% else %}
+                <a href="{{ request.path_info }}?ordering=-add_date" 
+                    class="pr-3 {% if 'add_date' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                    上架时间
+                    {% if request.GET.ordering == 'add_date' %}
+                    <span class="icon"><i class="mdi mdi-arrow-up-bold-outline"></i></span>
+                    {% endif %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

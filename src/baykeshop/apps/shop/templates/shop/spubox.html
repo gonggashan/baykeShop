@@ -1,0 +1,29 @@
+{% load shoptags %}
+{% comments_score spu as commentScore %}
+<div id="spubox" class="is-flex is-justify-content-space-between is-flex-direction-column has-background-white-bis" style="height: 100%;">
+    <div>
+        <figure class="image is-1by1">
+            <a href="{% url 'shop:spu-detail' spu.id %}"><img src="{{ img }}"></a>
+        </figure>
+        <div class="px-2 py-2">
+            <a class="has-text-grey-dark" href="{% url 'shop:spu-detail' spu.id %}">{{ spu.title }}</a>
+        </div>
+        
+    </div>
+    <div class="is-flex is-justify-content-space-between is-align-items-center px-2">
+        <div class="is-size-4 has-text-danger-dark">¥{{ price }}</div>
+        <!-- <div class="tag is-danger is-small">荐</div> -->
+        <!-- <b-button size="is-small" type="is-danger" icon-left="heart" outlined /> -->
+    </div>
+    <div class="is-flex is-justify-content-space-between px-2">
+        <div class="is-size-7 has-text-grey-light">{{ sales.sales__sum }}人付款</div>
+        <div class="is-size-7 has-text-grey-light">{{ commentScore.score_avg }}分</div>
+    </div>
+</div>
+<script>
+    var spubox = new Vue({
+        el: '#spubox',
+        delimiters: ['{$', '$}'],
+        data: {},
+    })
+</script>

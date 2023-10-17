@@ -1,0 +1,118 @@
+{% extends 'shop/base.html' %}
+
+{% load bayketags shoptags %}
+
+{% block breadcrumb %}
+<div class="container my-4">
+	<nav class="breadcrumb is-marginless is-small" aria-label="breadcrumbs">
+		<ul>
+			<li><a href="{% url 'shop:home' %}">首页</a></li>
+            {% for cate in spu.category.all %}
+            <li>
+                <a href="">{{ cate.name }}</a>
+            </li>
+            {% endfor %}
+			<li class="is-active"><a href="#" aria-current="page">{{ spu.title }}</a></li>
+		</ul>
+	</nav>
+</div>
+{% endblock %}
+
+{% block section %}
+<section class="section1">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3">
+                {% spubanners spu %}
+            </div>
+            <div class="column">
+                <h1 class="title is-size-4">{{ spu.title }}</h1>
+                <p class="subtitle">{{ spu.subtitle }}</p>
+                {% spuspecs spu %}
+                <div class="box is-radiusless mt-3" id="goodsContent">
+                    <b-tabs class="block">
+                        <b-tab-item label="商品详情">
+                            <div class="content">
+                                {{ spu.content|safe }}
+                            </div>
+                        </b-tab-item>
+                        <b-tab-item label="商品评价">
+                            {% comments_score spu as commentScore %}
+                            <div class="is-flex is-justify-content-space-between">
+                                <div class="">满意度：{{ commentScore.rate }}%</div>
+                                <div class="is-flex is-align-items-center">
+                                    <span> 评分：</span>
+                                    <b-rate 
+                                        :value="{{ commentScore.score_avg }}" 
+                                        disabled
+                                        size="is-small" 
+                                        custom-text="{{ commentScore.score_avg }}分">
+                                    </b-rate>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            {% for comment in comments %}
+                            <article class="media">
+                                <figure class="media-left">
+                                    <p class="image is-32x32">
+                                        <img class="is-rounded" src="{% if comment.owner.baykeuser.avatar %}{{ comment.owner.baykeuser.avatar.url }}{% endif %}">
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <p>
+                                        {{ comment.owner.username }}
+                                        <b-rate size="is-small" :value="{{ comment.score }}" disabled custom-text="{{ comment.score }}分"></b-rate>
+                                    </p>
+                                    <p class=" is-size-7">{{ comment.add_date|timesince }}前</p>
+                                    <p class=" has-text-grey-light">{{ comment.content }}</p>
+                                    
+                                    {% if comment.reply %}
+                                    <div class="box is-shadowless has-background-light">
+                                        <span class="has-text-danger-dark">商家回复：</span> {{ comment.reply }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                            </article>
+                            {% endfor %}
+                            {% if comments.has_previous or comments.has_next %}
+                            <div class=" dropdown-divider"></div>
+                            {% endif %}
+                            <nav class="pagination is-small" role="navigation" aria-label="pagination">
+                                {% if comments.has_previous %}
+                                <a class="pagination-previous" href="?page={{ comments.previous_page_number }}">Previous</a>
+                                {% endif %}
+                                {% if comments.has_next %}
+                                <a class="pagination-next" href="?page={{ page_obj.next_page_number }}">Next page</a>
+                                {% endif %}
+                            </nav>
+                        </b-tab-item>
+                    </b-tabs>
+                </div>
+            </div>
+            <div class="column is-2">
+                <div class="box is-radiusless is-shadowless">
+                    <h1 class="has-text-centered has-text-weight-bold">热门商品</h1> 
+                    <div class=" dropdown-divider"></div>
+                    {% for spu in spuhots %}
+                        {% spubox spu %}
+                        <div class="dropdown-divider mb-3"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block extravue %}
+    <script>
+        var goodsContent = new Vue({
+            el: "#goodsContent",
+            delimiters: ['{$', '$}'],
+            data: {},
+        })
+    </script>
+{% endblock %}
+    

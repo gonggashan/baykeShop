@@ -1,0 +1,129 @@
+{% extends 'shop/menmber/menmber.html' %}
+
+{% load shoptags %}
+
+{% block breadcrumb %}
+<div class="container my-4">
+	<nav class="breadcrumb is-marginless is-small" aria-label="breadcrumbs">
+		<ul>
+			<li><a href="{% url 'shop:home' %}">首页</a></li>
+			<li class="is-active"><a href="#" aria-current="page">{{ title }}</a></li>
+		</ul>
+	</nav>
+</div>
+{% endblock %}
+
+
+{% block menmber %}
+{% ordersku order.baykeshopordersku_set.all as order_compute %}
+<div class="box is-radiusless is-marginless pt-6" id="orderStatus">
+    <b-steps v-model="activeStep" :has-navigation="false">
+        <b-step-item label="待付款" icon="account-key" :clickable="false"></b-step-item>
+        <b-step-item label="待发货" icon="car" :clickable="false"></b-step-item>
+        <b-step-item label="待收货" icon="account-plus" :clickable="false"></b-step-item>
+        <b-step-item label="待评价" icon="comment-plus" :clickable="false"></b-step-item>
+        <b-step-item label="已完成" icon="store" :clickable="false"></b-step-item>
+        <!-- <b-step-item label="已关闭" icon="close" :clickable="false"></b-step-item>
+        <b-step-item label="退款中" icon="store" :clickable="false"></b-step-item> -->
+    </b-steps>
+</div>
+
+<div class="box is-radiusless is-marginless is-shadowless">
+    <h1 class=" is-size-5">订单信息</h1>
+    <div class="dropdown-divider"></div>
+    <ul style="line-height: 30px;">
+        <li>订单编号：{{ order.order_sn }}</li>
+
+        <li>订单日期：{{ order.add_date }}</li>
+
+        <li>支付状态：{{ order.get_status_display }}</li>
+
+        <li>支付方式：{{ order.get_paymethod_display }}</li>
+
+        <li>订单金额：¥{{ order_compute.total_price }}</li>
+
+        <li>订单留言：{{ order.mark }}</li>
+    </ul>
+</div>
+<div class="box is-radiusless is-marginless1 is-shadowless">
+    <h1 class=" is-size-5">收货信息</h1>
+    <div class="dropdown-divider"></div>
+    <ul style="line-height: 30px;">
+        <li>签收人：{{ order.name }}</li>
+        <li>手机号：{{ order.phone }}</li>
+        <li>收货地址：{{ order.address }}</li>
+    </ul>
+</div>
+
+<div class="box is-radiusless mb-4 is-shadowless">
+    <h1 class=" is-size-5">商品信息</h1>
+    <div class="dropdown-divider"></div>
+    {% for sku in order.baykeshopordersku_set.all %}
+    <div class="is-flex is-justify-content-space-between">
+        <div>
+            <figure class=" image is-96x96">
+                <img src="{{ sku.sku_json.img }}" alt="{{ sku.sku_json.title }}" srcset="">
+            </figure>
+        </div>
+        <div
+            class="has-background-danger1 is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1 pl-3 pr-3">
+            <h1 class="has-text-weight-bold">{{ sku.sku_json.title }}</h1>
+            <div class="is-flex">
+                {% for op, value in sku.sku_json.specs.items %}
+                <span class="mr-3 has-text-grey-light">{{ op }}:{{ value }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="has-background-danger1 is-flex is-justify-content-center is-align-items-center">
+            <p class="has-text-danger-dark">¥ {{ sku.sku_json.price }} x {{ sku.count }}</p>
+        </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    {% endfor %}
+    {% order_action order %}
+</div>
+
+{% endblock %}
+
+
+{% block extravue %}
+<script>
+    var orderStatus = new Vue({
+        el: '#orderStatus',
+        delimiters: ['{$', '$}'],
+        data: {
+            activeStep: 0,
+        },
+        created() {
+            this.orderStatusMethod()
+        },
+        methods: {
+            orderStatusMethod() {
+                switch (Number('{{ order.status }}')) {
+                    case 1:
+                        this.activeStep = 0;
+                        break;
+                    case 2:
+                        this.activeStep = 1;
+                        break;
+                    case 3:
+                        this.activeStep = 2;
+                        break;
+                    case 4:
+                        this.activeStep = 3;
+                        break;
+                    case 5:
+                        this.activeStep = 4;
+                        break;
+                    case 6:
+                        this.activeStep = 5;
+                        break;
+                    case 7:
+                        this.activeStep = 6;
+                        break;
+                }
+            },
+        }
+    })
+</script>
+{% endblock %}

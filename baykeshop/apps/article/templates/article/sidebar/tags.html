@@ -1,0 +1,11 @@
+<div class="box">
+    <h1 class="is-size-5 has-text-weight-bold">文章标签</h1>
+    <div class="dropdown-divider"></div>
+    <div class="tags">
+        {% for tag in tags %}
+            <a class="tag {{ colors|random }}" href="{% url 'baykearticle:tags-list' tag.name %}">
+                {{ tag.name }}
+            </a>
+        {% endfor %}  
+    </div>
+</div>

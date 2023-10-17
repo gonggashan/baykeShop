@@ -1,0 +1,22 @@
+<div id="carousel" class="container">
+    <template>
+        <b-carousel :pause-info="false">
+            {% for banner in banners %}
+            <b-carousel-item>
+                <section class="hero is-medium">
+                    <a class="image" href="{{ banner.target }}">
+                        <img width="100%" src="{{ banner.img.url }}" alt="{{ banner.remark }}"> 
+                    </a>
+                </section>
+            </b-carousel-item>
+            {% endfor %}
+        </b-carousel>
+    </template>
+</div>
+<script>
+    var carousel = new Vue({
+        el: '#carousel',
+        delimiters: ['{$', '$}'],
+        data: {},
+    })
+</script>

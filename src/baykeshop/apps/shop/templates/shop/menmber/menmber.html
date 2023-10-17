@@ -1,0 +1,73 @@
+{% extends 'shop/base.html' %}
+
+{% load static %}
+
+{% block breadcrumb %}
+<div class="container my-4">
+	<nav class="breadcrumb is-marginless is-small" aria-label="breadcrumbs">
+		<ul>
+			<li><a href="{% url 'shop:home' %}">首页</a></li>
+			<li class="is-active"><a href="#" aria-current="page">{{ title }}</a></li>
+		</ul>
+	</nav>
+</div>
+{% endblock %}
+
+{% block section %}
+<div class="container">
+    <div class="columns">
+      <div class="column is-2">
+        <div class="box is-radiusless is-marginless is-flex is-flex-direction-column is-align-items-center">
+          <figure class="image is-64x64">
+            <img class="is-rounded" src="
+                {% if request.user.baykeuser.avatar %}
+                {{ request.user.baykeuser.avatar.url }}
+                {% else %}{% static 'img/wx.jpg' %}{% endif %}">
+          </figure>
+          <p class="mt-2">
+            {% if request.user.baykeuser.name %}
+                {{ request.user.baykeuser.name }}
+            {% else %}
+                {{ request.user.username }}
+            {% endif %}
+          </p>
+        </div>
+        <div class="box is-radiusless">
+          <aside class="menu">
+            <p class="menu-label">
+              账户管理
+            </p>
+            <ul class="menu-list">
+              <li><a href="{% url 'shop:menmber' %}"
+                  class="{% if request.path == '/menmber/' %} is-active {% endif %}">个人信息</a></li>
+              <li><a href="{% url 'shop:balance-log' %}"
+                  class="{% if 'balance' in request.path %} is-active {% endif %}">我的余额</a></li>
+              <li><a href="{% url 'shop:address' %}"
+                  class="{% if 'address' in request.path %} is-active {% endif %}">地址管理</a></li>
+            </ul>
+            <p class="menu-label">订单管理</p>
+            <ul class="menu-list">
+              <li><a href="{% url 'shop:orders-list' %}" class="{% if 'orders' in request.path %} is-active {% endif %}">我的订单</a></li>
+            </ul>
+  
+          </aside>
+        </div>
+  
+      </div>
+      <div class="column">
+        <div class="box is-radiusless">
+          <h1 class="is-size-4">
+            {% block menmber_title %}个人中心{% endblock %}
+          </h1>
+          <div class="dropdown-divider"></div>
+          {% block menmber %}
+          <div class="columns pt-3 pb-3">
+            <div class="column is-2">个人信息</div>
+            {% include 'shop/menmber/userinfo.html' %}
+          </div>
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+</div>  
+{% endblock %}

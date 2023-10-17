@@ -1,0 +1,9 @@
+{% load i18n %}
+{% include "django/forms/widgets/multiwidget.html" %}
+{% spaceless %}
+    {% if audio %}
+        <a title="{% trans "Play CAPTCHA as audio file" %}" href="{{ audio }}">
+    {% endif %}
+    <img src="{{ image }}" alt="captcha" class="captcha ml-2 is-clickable" title="点击更换验证码" />
+    {% if audio %}</a>{% endif %}
+{% endspaceless %}

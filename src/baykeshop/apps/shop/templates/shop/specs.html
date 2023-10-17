@@ -1,0 +1,190 @@
+{% load shoptags %}
+{{ skus|json_script:"skusData" }}
+<div id="specs">
+    <div class="box is-marginless is-radiusless has-background-primary-dark has-text-white-ter">
+        <div class="is-flex is-justify-content-space-between is-align-items-center">
+            <div>
+                <span class="is-size-7"> 原价：¥ <del>{$ sku.discount_price $}</del></span>
+                <h1 class="is-size-4">¥ {$ sku.price $}</h1>
+            </div>
+            <div class=" has-text-centered">
+                {$ sku.sales $}
+                <h1>销量</h1>
+            </div>
+        </div>
+    </div>
+     <!-- specs规格数据获取 -->
+    <div class="box is-radiusless is-marginless">
+        <div class="is-flex is-align-items-center" v-if="specsShow" v-for="(values, key, index) in specs" :key="key" style="height:40px;">
+            <div class="has-text-grey-light">{$ key $}：</div>
+            <div class="is-flex is-flex-wrap-wrap is-flex-grow-1">
+                <div class="mr-2" v-for="op, i in values" :key="i" style="flex: 0 0 25%;">
+                    <b-radio-button v-model="radioButton[index]"
+                        :native-value="op"
+                        size="is-small"
+                        type="is-primary is-light is-outlined">
+                        <span>{$ op $}</span>
+                    </b-radio-button>
+                </div>
+            </div>
+        </div>
+        <!-- 数量 -->
+        <div class=" is-flex is-align-items-center mt-3">
+            <div class=" has-text-grey-light">数量：</div>
+            <div>
+                <b-numberinput 
+                    controls-position="compact" 
+                    min="1" 
+                    :max="stock" 
+                    v-model="num"
+                    size="is-small"
+                    :editable="false">
+                </b-numberinput> 
+            </div>
+            <div class=" has-text-grey-dark ml-3">(库存{$ stock $}){{ unit }}</div>
+        </div>
+        <!-- 数量end -->
+    </div>
+
+    <!-- 加入购物车按钮及一键购买 -->
+    <div class="box is-radiusless" id="payButton">
+        <b-button 
+            type="is-primary"
+            @click="addCart"
+            :disabled="stock ? false : true">
+            加入购物车
+        </b-button>
+        <b-button 
+            type="is-primary" 
+            :disabled="stock ? false : true"
+            @click="nowBuy"
+            outlined>
+            立即购买
+        </b-button>
+    </div>
+    <!-- 加入购物车按钮及一键购买 -->
+</div>
+<script>
+    var skusData = JSON.parse(document.querySelector("#skusData").textContent)
+    var specs = new Vue({
+        el: '#specs',
+        delimiters: ['{$', '$}'],
+        data: {
+            skusData,
+            specs: {},
+            sku:{
+                discount_price: 0,
+                price: 0,
+                sales: 0
+            },
+            specValueProducts:{},
+            radioButton:[],
+            stock: 0,
+            num: 1,
+            specsShow: false
+        },
+        created(){
+            this.getSpecs()
+        },
+        methods: {
+            getSpecs(){
+                if (this.skusData.length > 1){
+                    this.specsShow = true
+                    let item_specs = {}
+                    this.skusData.map(item => {
+                        if (JSON.stringify(item.specs) !== '{}'){
+                            // 提取specs
+                            for (let [key, value] of Object.entries(item.specs)) {
+                                if (!Number.isInteger(Number(key))){
+                                    if (!(key in item_specs)) {
+                                        item_specs[key] = []
+                                        item_specs[key].push(value)
+                                    }else{
+                                        item_specs[key].push(value)
+                                    }
+                                }  
+                            };
+                            // 提取规格对应的数据键值对
+                            this.specValueProducts[[...new Set(Object.values(item.specs))].join(',')] = item                            
+                        }
+                    })
+                    this.specs = item_specs
+                    // 多规格默认数据
+                    this.radioButton = [...new Set(Object.values(this.skusData[0].specs))]
+                    this.sku = this.specValueProducts[this.radioButton.join(',')]
+                } else {
+                    // 单规格默认数据
+                    this.sku = this.skusData.length ? this.skusData[0] : this.sku
+                    this.stock = this.skusData[0].stock
+                }
+            },
+
+            // 加入购物车
+            addCart(){
+                fetch("{% url 'shop:shopapi:create-cart' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': bayke.getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({sku: this.sku.id, num: this.num}),
+                }).then(response => bayke.handleJSONResponse(response)).then(data => {
+                    // 处理响应数据
+                    header._data.cartcount += this.num
+                    bayke.toastMessage('is-success', '加入购物车成功.')
+                }).catch(error => {
+                    // 处理错误
+					let message = Object.values(error).join()
+					bayke.toastMessage('is-danger', message)
+                });
+            },
+
+            // 立即购买
+            nowBuy(){
+                let data = {
+                    baykeshopordersku_set: [
+                        {
+                            sku: this.sku.id,
+                            count: this.num,
+                        }
+                    ]
+                }
+                fetch("{% url 'shop:shopapi:create-order' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': bayke.getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data),
+                }).then(response => bayke.handleJSONResponse(response)).then(data => {
+                    // 处理响应数据
+                    bayke.toastMessage('is-success', '正在跳转至支付页面...')
+                    location.href = data.cashurl
+
+                }).catch(error => {
+                    // 处理错误
+					let message = Object.values(error).join()
+					bayke.toastMessage('is-danger', message)
+                });
+            }
+        },
+        watch:{
+            radioButton: {
+                handler: function(val){
+                    let specs = val.join(',')
+                    let item_sku = this.specValueProducts[specs]
+                    if (item_sku) {
+                        this.sku = item_sku
+                        this.stock = item_sku.stock
+                    }else{
+                        this.stock = 0
+                    }
+                },
+                immediate: true,
+                deep:true
+            }
+        },
+    })
+</script>

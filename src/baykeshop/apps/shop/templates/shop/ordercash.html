@@ -1,0 +1,158 @@
+{% extends 'shop/base.html' %}
+
+{% load bayketags shoptags %}
+
+{% block breadcrumb %}
+<div class="container my-4">
+	<nav class="breadcrumb is-marginless is-small" aria-label="breadcrumbs">
+		<ul>
+			<li><a href="{% url 'shop:home' %}">首页</a></li>
+			<li class="is-active"><a href="#" aria-current="page">{{ title }}</a></li>
+		</ul>
+	</nav>
+</div>
+{% endblock %}
+
+{% block section %}
+<div class="container">
+    <div class="box is-radiusless">
+        <h1 class="is-size-5">收货地址</h1>
+        <img width="100%"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAAAECAYAAACeNca/AAAAAXNSR0IArs4c6QAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAEsKADAAQAAAABAAAABAAAAAAdekyeAAABbUlEQVR4Ae2asW3DMBBFSWqGACkzRHprgyCbZASPEHiRjJC4TlYIkD4zWIyPd8WXzcZKw+KpkSCIBPHw+HWimNP5eHj5nae6vNv1pqPW4/fhfr5sW98e51TK9n5TPeanz6t+Ga+Thq9zwAd8cAL4oBzIB3zAB+qHRH0W04B6soHAB3xYvRj4fnMc5AP5sJoYrD8YjoHfF8XGNy2nvZ23Hqcy7bttS+7f7z7cubnUbnvGG6zg20DgAz4EAXxQEOQDPuCDEsAHpUE+4AM+KAF8UBrkAz7ggxLAB6UxQD4U272Sct7puG66Pq/O/bzefVy2aX//0z/6td1Xz19X/TJeJw1f54AP+OAE8EE5kA/4gA/UD/b3lPrMZgL1ZMsDfIhYxAd8CBUcBN+bxoF8CCnIB58WY9cPhd0r4esAq4kxktWJ3W2Bg914DQQ+4IMGBD7gAz4oAXxQGuQDPuCDEsAHpUE+4AM+KAF8UBqj58MfRyl5tp+pqv4AAAAASUVORK5CYII=">
+        {% include 'shop/address.html' with update=True delete=False %}
+    </div>
+    
+    <div class="box is-radiusless is-marginless">
+        <h1 class=" is-size-5">支付方式</h1>
+        <div class="dropdown-divider"></div>
+        {% include 'shop/paymethods.html' %}
+        <!-- <div class="dropdown-divider"></div> -->
+    </div>
+
+    <div class="box is-marginless is-radiusless">
+        <h1 class="is-size-5">订单商品</h1>
+        <div class=" dropdown-divider"></div>
+        {% for sku in order.baykeshopordersku_set.all %}
+        <div class="columns">
+            <div class="column is-2 is-flex is-justify-content-center">
+                <figure class="image is-128x128">
+                    <img src="{{ sku.sku_json.img }}" alt="{{ sku.sku_json.title }}">
+                </figure>
+            </div>
+            <div class="column is-flex is-flex-direction-column is-justify-content-center">
+                <h1 class=" has-text-weight-bold">{{ sku.sku_json.title }}</h1>
+                <div class="has-text-grey-light">
+                    {% for op, value in sku.sku_json.specs.items %}
+                    <span class="mr-3">{{ op }}:{{ value }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="column is-2 is-flex is-justify-content-center is-align-items-center">
+                {{ sku.sku_json.price }}x{{ sku.count }}
+            </div>
+            <div class="column is-2 is-flex is-justify-content-center is-align-items-center">
+                ¥ {{ sku.sku_json.price|multiply:sku.count }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="dropdown-divider"></div>
+        <div id="order">
+            <div class="box is-shadowless is-radiusless has-background-light">
+                <div class="field">
+                    <label class="label">订单留言</label>
+                    <div class="control">
+                        <textarea class="textarea" v-model="mark" name="mark" placeholder="请备注说明您的特殊要求..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box is-radiusless" id="inPayment">
+            {% ordersku order.baykeshopordersku_set.all as payorder %}
+            <div class="is-flex is-flex-direction-column">
+                <div class="is-flex mb-2">
+                    <div class="has-text-right" style="width:85%">{{ payorder.count__sum }} 件商品，总商品金额：</div>
+                    <div class="has-text-left" style="width:10%; margin-left:5%;">¥{{ payorder.total }} </div>
+                </div>
+                <div class="is-flex mb-2">
+                    <div class="has-text-right" style="width:85%">运费：</div>
+                    <div class="has-text-left" style="width:10%;margin-left:5%;">¥{{ payorder.freight }} </div>
+                </div>
+                <div class="is-flex mb-2">
+                    <div class="has-text-right" style="width:85%">商品总额：</div>
+                    <div class="has-text-left" style="width:10%;margin-left:5%;">¥{{ payorder.total }} </div>
+                </div>
+                <div class="is-flex has-text-danger-dark">
+                    <div class=" has-text-right is-size-5" style="width:85%">应付总额：</div>
+                    <div class=" has-text-left is-size-5" style="width:10%; margin-left:5%;">¥{{ payorder.total_price }} </div>
+                </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="has-text-right">
+                <button class="button is-primary mt-2 pl-6 pr-6 is-large" @click="immediatePayment">立即支付</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
+
+
+{% block extravue %}
+    <script>
+        var order = new Vue({
+            el: "#order",
+            delimiters: ['{$', '$}'],
+            data: {
+                mark: "{{ order.mark }}",
+            },
+            methods: {}
+        })
+
+        // 立即支付
+        var inPayment = new Vue({
+            el: "#inPayment",
+            delimiters: ['{$', '$}'],
+            data:{},
+            methods: {
+                immediatePayment(){
+                    const data = {
+                        "orderid": Number('{{ order.id }}'),
+                        "paymethod": Number(payMethod._data.defaultPay.value),
+                        "name": address._data.formProps.name,
+                        "phone": address._data.formProps.phone,
+                        "address": this.getAddress(),
+                        "mark": order._data.mark
+                    }
+                    fetch("{% url 'shop:shopapi:cash-order' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': bayke.getCookie('csrftoken'),
+                        },
+                        body: JSON.stringify(data),
+                    }).then(response => bayke.handleJSONResponse(response)).then(data => {
+                        // 处理响应数据
+                        if (data.payurl){
+                            bayke.toastMessage('is-success', '正在跳转到支付页面...')
+                            location.replace(data.payurl)
+                        }else{
+                            bayke.toastMessage('is-danger', '暂不支持该支付方式！')
+                        }   
+                        
+                    }).catch(error => {
+                        // 处理错误
+                        let message = Object.values(error).join()
+                        bayke.toastMessage('is-danger', message)
+                    });
+                },
+                getAddress(){
+                    let adder = address._data.formProps
+                    return `${adder.province}${adder.city}${adder.county}${adder.address}`
+                }
+            },
+            
+        })
+    </script>
+{% endblock %}
+    

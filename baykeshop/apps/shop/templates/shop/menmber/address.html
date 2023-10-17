@@ -1,0 +1,24 @@
+{% extends 'shop/menmber/menmber.html' %}
+
+
+{% block title %}
+	我的地址
+{% endblock %}
+	
+
+{% block breadcrumb %}
+<div class="container my-4">
+	<nav class="breadcrumb is-marginless is-small" aria-label="breadcrumbs">
+		<ul>
+			<li><a href="{% url 'shop:home' %}">首页</a></li>
+			<li class="is-active"><a href="#" aria-current="page">地址管理</a></li>
+		</ul>
+	</nav>
+</div>
+{% endblock %}
+
+{% block menmber_title %}我的地址{% endblock %}
+
+{% block menmber %}
+{% include 'shop/address.html' with update=True delete=True %}
+{% endblock %}

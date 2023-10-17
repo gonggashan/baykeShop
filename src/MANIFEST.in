@@ -1,0 +1,7 @@
+include LICENSE
+include README.md
+recursive-include baykeshop/static *
+recursive-include baykeshop/templates *
+recursive-include baykeshop/apps/*/templates *
+recursive-include baykeshop/apps/*/static *
+recursive-include baykeshop/conf *.json

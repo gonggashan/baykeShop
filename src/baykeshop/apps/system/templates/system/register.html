@@ -1,0 +1,25 @@
+{% extends 'system/login.html' %}
+
+
+{% block auth_form %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_buefy }}
+        <div class="submit-row">
+            <input class="button is-primary is-fullwidth" type="submit" value="注册">
+        </div>
+    </form>
+    <p class="has-text-right mt-3">
+        <a class="has-text-link" href="{% url 'system:login' %}">已有账号，前往登录>></a>
+    </p>
+{% endblock %}
+
+{% block extravue %}
+    <script>
+        var login = new Vue({
+            el: '#login',
+            delimiters: ['{$', '$}'],
+        })
+    </script>
+{% endblock %}
+    
