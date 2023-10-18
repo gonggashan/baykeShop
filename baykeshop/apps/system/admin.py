@@ -28,6 +28,7 @@ class BaykeADSpaceAdmin(ModelAdmin):
     list_display = ('id', 'slug', 'name', 'position', 'remark', 'add_date')
     # prepopulated_fields = {'slug': ('name',),}
     list_display_links = ('id', 'slug', )
+    list_filter = ('position',)
 
     def get_readonly_fields(self, request: HttpRequest, obj=None):
         if obj and obj.space == 'text':
