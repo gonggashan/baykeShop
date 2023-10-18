@@ -104,11 +104,11 @@ class BaykeUserBalanceLog(BaseModelMixin):
         # 累计充值
         amount__sum = cls.balance_queryset(user).filter(
             change_status=1).aggregate(Sum('amount')).get('amount__sum')
-        return amount__sum if amount__sum else 0
+        return round(amount__sum, 2) if amount__sum else 0
     
     @classmethod
     def minus_sum_amount(cls, user):
         # 累计消费
         amount__sum = cls.balance_queryset(user).filter(
             change_status=2).aggregate(Sum('amount')).get('amount__sum')
-        return amount__sum if amount__sum else 0
+        return round(amount__sum, 2) if amount__sum else 0
