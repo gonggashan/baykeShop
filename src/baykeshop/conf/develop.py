@@ -24,4 +24,3 @@ TINYMCE_CONFIG = {
     'toolbar_sticky': False,
     'plugins_exclude': 'upgrade'  # 禁用升级插件
 }
-

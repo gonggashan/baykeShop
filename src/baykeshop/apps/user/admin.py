@@ -31,7 +31,7 @@ class BaykeUserAdmin(UserAdmin):
     def avatar(self, obj):
         return format_html(
             "<img width='36px' height='36px' src={} />", 
-            obj.baykeuser.avatar.url if obj.baykeuser.avatar else ''
+            obj.baykeuser.avatar.url if obj.baykeuser.avatar else '/static/img/avatar.png'
         )
     
     @admin.display(description="余额")

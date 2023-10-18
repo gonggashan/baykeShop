@@ -14,6 +14,7 @@ import string
 from django.core.cache import cache
 from django.conf import settings
 from django.core.mail import send_mail, get_connection
+from django.db.utils import OperationalError
 
 from baykeshop.conf import bayke_settings
 from baykeshop.apps.system.models import BaykeADSpace, BaykeADPosition
@@ -70,15 +71,18 @@ def generate_order_sn(user):
 
 def get_cache_space(slug):
     # 缓存配置
-    space = None
-    space_obj = BaykeADSpace.get_space(slug)
-    if space_obj and space_obj.space == 'text':
-        space = space_obj.text
-    elif space_obj and space_obj.space == 'html':
-        space = space_obj.html
-    elif space_obj and space_obj.space == 'img':
-        space = space_obj.img.url if space_obj.img else None
-    return cache.get_or_set(slug, space)
+    try:
+        space = None
+        space_obj = BaykeADSpace.get_space(slug)
+        if space_obj and space_obj.space == 'text':
+            space = space_obj.text
+        elif space_obj and space_obj.space == 'html':
+            space = space_obj.html
+        elif space_obj and space_obj.space == 'img':
+            space = space_obj.img.url if space_obj.img else None
+        return cache.get_or_set(slug, space)
+    except OperationalError:
+        pass
 
 
 def get_cache_position_spaces(slug):

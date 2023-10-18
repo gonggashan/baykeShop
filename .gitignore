@@ -144,3 +144,5 @@ deploy/sock
 deploy/*.log
 deploy/*.sock
 media/
+
+.hintrc
