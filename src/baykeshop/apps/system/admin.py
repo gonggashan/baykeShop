@@ -29,12 +29,12 @@ class BaykeADSpaceAdmin(ModelAdmin):
     # prepopulated_fields = {'slug': ('name',),}
     list_display_links = ('id', 'slug', )
 
-    def get_readonly_fields(self, request: HttpRequest, obj: Any | None = ...) -> list[str] | tuple[Any, ...]:
-        if obj.space == 'text':
+    def get_readonly_fields(self, request: HttpRequest, obj=None):
+        if obj and obj.space == 'text':
             self.readonly_fields = ('html', 'img', 'slug')
-        elif obj.space == 'html':
+        elif obj and obj.space == 'html':
             self.readonly_fields = ('text', 'img', 'target', 'slug')
-        elif obj.space == 'img':
+        elif obj and obj.space == 'img':
             self.readonly_fields = ('text', 'html', 'slug')
         return super().get_readonly_fields(request, obj)
 
