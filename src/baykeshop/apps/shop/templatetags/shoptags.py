@@ -76,7 +76,7 @@ def comments_score(spu):
     comments = BaykeComment.objects.filter(tag=str(spu.id))
     gte_3 = comments.filter(score__gte=3).count()
     rate = gte_3 / comments.count() if comments.count() else 0.98
-    score_avg = comments.aggregate(Avg('score')).get('score__avg', 4.8)
+    score_avg = comments.aggregate(Avg('score')).get('score__avg') or 4.8
     return {
         'rate': rate * 100,
         'score_avg': score_avg
