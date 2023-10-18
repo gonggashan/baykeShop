@@ -23,3 +23,5 @@ TINYMCE_CONFIG = {
     'toolbar_sticky': False,
     'plugins_exclude': 'upgrade'  # 禁用升级插件
 }
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
