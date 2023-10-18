@@ -72,4 +72,4 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 凡赞赏金额大于20元的用户，可加入项目交流群与众多django开发爱好者在线交流，还可获得作者的在线答疑服务，以及后期相关配套插件的优先使用权！
 
-![1697599129412](http://s.bayke.shop/static/img/fav.png)
+![输入图片说明](baykeshop/apps/system/static/img/fav.png)
