@@ -2,17 +2,17 @@
 
 ![baykeshop](baykeshop/apps/system/static/img/logo.png)
 
-
 <h1>baykeShop开源商城系统</h1>
 
 </div>
 
 ## 项目简介
+
 baykeShop（拜客商城系统）是一款全开源Python栈商城系统，后端依托django强大的框架体系，本项目融合了django的传统模版体系，同时轻微结合了前后端分离的开发方式，在不同场景选择了不同的技术栈，使其更具学习和研究价值，并且很好的打包为一个Python包文件，使其二次开发以及集成到自身项目更加简便易用，更是python django初学者开发上手学习的不二选择！
 
 ## 项目演示
-商城PC端前台：http://s.bayke.shop
 
+商城PC端前台：http://s.bayke.shop
 
 ## 安装
 
@@ -75,6 +75,8 @@ python manage.py initdata
 import os
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 ```
+
+**特别说明**：项目配置中对缓存并没有特别配置，默认使用了django的内存缓存，部署时建议设置为reids缓存或者数据库缓存，否则邮件验证会有小问题！
 
 ## 配置说明
 
