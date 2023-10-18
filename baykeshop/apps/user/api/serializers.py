@@ -53,12 +53,9 @@ class SendEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=80)
     
     def push_mail(self, validated_data):
-        if not cache.get(validated_data['email']):
-            code = code_random()
-            cache.set(validated_data['email'], code, 300)
-            push_main(code, validated_data['email'])
-        elif cache.get(validated_data['email']):
-            push_main(cache.get(validated_data['email']), validated_data['email'])
+        code = code_random()
+        cache_code = cache.get_or_set(validated_data['email'], code, 300)
+        push_main(cache_code, validated_data['email'])
         return True
 
 
@@ -78,12 +75,12 @@ class VerifyEmailSerializer(serializers.Serializer):
         if user.exists():
             raise serializers.ValidationError("该邮箱已被占用，请更换邮箱！")
         return email
-
-    def validate_code(self, code):
-        cache_code = cache.get(self.initial_data['email'])
-        if cache_code != code:
+    
+    def validate(self, attrs):
+        cache_code = cache.get(attrs['email'])
+        if cache_code != attrs['code']:
             raise serializers.ValidationError("验证码有误！")
-        return code
+        return super().validate(attrs)
     
 
 class BaykeUserBalancePushSerializer(serializers.Serializer):

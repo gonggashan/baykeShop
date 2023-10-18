@@ -33,8 +33,8 @@ def get_email_connection():
     DEVELOP_EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     PRODUCTION_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     connection = get_connection(
-        # backend="django.core.mail.backends.smtp.EmailBackend", 
-        backend=DEVELOP_EMAIL_BACKEND if settings.DEBUG else PRODUCTION_EMAIL_BACKEND,
+        backend="django.core.mail.backends.smtp.EmailBackend", 
+        # backend=DEVELOP_EMAIL_BACKEND if settings.DEBUG else PRODUCTION_EMAIL_BACKEND,
         fail_silently=False,
         host=get_cache_space('EMAIL_HOST'),
         port=int(get_cache_space('EMAIL_PORT')),
