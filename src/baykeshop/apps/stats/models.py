@@ -7,7 +7,7 @@ from baykeshop.common.models import BaseModelMixin, ContentTypeAbstract
 
 class BaykeClientUser(BaseModelMixin):
     """Model definition for BaykeClientUser."""
-    username = models.CharField(_("终端名称"), max_length=150)
+    username = models.CharField(_("终端名称"), max_length=150, blank=True, default="")
     user_agent = models.CharField(_("浏览器"), max_length=250)
     ip = models.GenericIPAddressField(_("ip地址"), protocol='both', unpack_ipv4=False)
     stats_date = models.DateField(_("统计日期"), blank=True)
@@ -52,10 +52,9 @@ class BaykeDataStats(ContentTypeAbstract):
 
     @classmethod
     def add_stats(cls, request, content_type, object_id=None, tag=""):
-        _meta = request.META
-        username = _meta['USERNAME']
         user_agent = request.headers["User-Agent"]
         ip = BaykeClientUser.get_client_ip(request)
+        username = ip
         clent_user, is_created = BaykeClientUser.objects.get_or_create(
             defaults={
                 "username":username,
