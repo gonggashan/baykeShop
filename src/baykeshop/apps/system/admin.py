@@ -28,6 +28,7 @@ class BaykeADSpaceAdmin(ModelAdmin):
     list_display = ('id', 'slug', 'name', 'position', 'remark', 'add_date')
     # prepopulated_fields = {'slug': ('name',),}
     list_display_links = ('id', 'slug', )
+    list_filter = ('position',)
 
     def get_readonly_fields(self, request: HttpRequest, obj=None):
         if obj and obj.space == 'text':
@@ -77,7 +78,7 @@ class BaykeCommentAdmin(admin.ModelAdmin):
             obj.reply = reply
             obj.save()
             messages.success(request, '回复成功！')
-            return redirect("admin:common_baykecomment_changelist")
+            return redirect("admin:system_baykecomment_changelist")
         return TemplateResponse(request, 'system/reply_comment.html', context)
     
     def has_add_permission(self, request: HttpRequest) -> bool:

@@ -145,6 +145,11 @@ class BaykeShopOrderAdmin(ModelAdmin):
             obj.save()
             return redirect('admin:shop_baykeshoporder_changelist')
         return TemplateResponse(request, "shop/admin/send_goods.html", context)
+    
+    def has_change_permission(self, request: HttpRequest, obj=None) -> bool:
+        if obj and obj.status == 1:
+            return True
+        return False
 
 
 # @admin.register(BaykeShopOrderSKU)
