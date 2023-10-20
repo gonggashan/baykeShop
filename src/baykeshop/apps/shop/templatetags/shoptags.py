@@ -55,8 +55,8 @@ def ordersku_func(ordersku_queryset):
     return {
         **count__sum,
         'freight': freight,
-        'total': total,
-        'total_price': total_price
+        'total': total_price,
+        'total_price': ordersku_queryset.first().order.total_price
     }
 
 
