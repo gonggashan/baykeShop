@@ -90,7 +90,7 @@ class BaykeDataStats(ContentTypeAbstract):
         # 5分钟之内重复同一个用户访问同一个页面只记录一次
         item_date = timezone.now() - stats.pub_date
         from datetime import timedelta
-        if item_date > timedelta(minutes=1):
+        if item_date > timedelta(minutes=5):
             stats.pv += 1
             stats.save()
         return clent_user, stats
@@ -103,6 +103,6 @@ class BaykeDataStats(ContentTypeAbstract):
             models.Q(tag=tag)
         ).aggregate(models.Sum('pv'), models.Sum('uv'))
         
-        pv = stats.get('pv__sum', 0)
-        uv = stats.get('uv__sum', 0)
+        pv = stats.get('pv__sum') or 1
+        uv = stats.get('uv__sum') or 1
         return pv, uv
