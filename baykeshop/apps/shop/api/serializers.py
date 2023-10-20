@@ -148,7 +148,6 @@ class BaykeShopOrderCashSerializer(serializers.Serializer):
         instance.phone = validated_data['phone']
         instance.address = validated_data['address']
         instance.mark = validated_data['mark']
-        instance.total_price = self.get_total_price(instance)
         instance.status = 1 
         instance.save()
         return instance
@@ -157,14 +156,6 @@ class BaykeShopOrderCashSerializer(serializers.Serializer):
         return BaykeShopOrder.objects.get(
             id=orderid, owner=self.context['request'].user, status=1
         )
-
-    def get_total_price(self, instance):
-        # 实付金额
-        baykeshopordersku_set = instance.baykeshopordersku_set.all()
-        shipping_price = baykeshopordersku_set.first().sku.spu.shipping_price
-        from decimal import Decimal
-        total_price = sum([ordersku.count * Decimal(ordersku.sku_json['price']) for ordersku in baykeshopordersku_set])
-        return total_price + shipping_price
     
     @property
     def data(self):
