@@ -16,17 +16,18 @@
 
 {% block article_content %}
 <div class="box">
-    <h1 class="title">
+    <h1 class="title has-text-centered py-4">
         {{ article.title }}
     </h1>
-    <p class="subtitle has-text-grey" style="font-size: 14px;">
-        分类：<a href="{% url 'baykearticle:category-detail' article.category.id %}">{{ article.category.name }}</a>
-        时间：{{ article.pub_date|timesince }}前
+    <p class="subtitle has-text-grey has-text-centered" style="font-size: 14px;">
+        分类：<a href="{% url 'baykearticle:category-detail' article.category.id %}">{{ article.category.name }}</a>&nbsp;
+        时间：{{ article.pub_date|timesince }}前&nbsp;
         {% if article.tags.count %}
-        标签：{{ article.tags.all|join:'' }}
+        标签：{{ article.tags.all|join:'' }}&nbsp;
         {% endif %}
         浏览量：{{ pv }}
     </p>
+    <div class="dropdown-divider"></div>
     <div class="content">
         {{ article.content|safe }}
     </div>
