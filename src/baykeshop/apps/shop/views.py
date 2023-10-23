@@ -274,7 +274,7 @@ class BaykeShopOrderCashDetailView(LoginRequiredMixin, DetailView):
         return context
     
 
-class BaykeUsermemberView(LoginRequiredMixin, TemplateView):
+class BaykeUserMemberView(LoginRequiredMixin, TemplateView):
     """ 个人中心 """
     template_name = "shop/member/member.html"
 
