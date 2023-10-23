@@ -1,4 +1,4 @@
-{% extends 'shop/menmber/menmber.html' %}
+{% extends 'shop/member/member.html' %}
 
 
 {% block title %}
@@ -17,8 +17,8 @@
 </div>
 {% endblock %}
 
-{% block menmber_title %}我的地址{% endblock %}
+{% block member_title %}我的地址{% endblock %}
 
-{% block menmber %}
+{% block member %}
 {% include 'shop/address.html' with update=True delete=True %}
 {% endblock %}

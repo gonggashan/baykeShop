@@ -1,10 +1,10 @@
-{% extends 'shop/menmber/menmber.html' %}
+{% extends 'shop/member/member.html' %}
 
 {% load shoptags %}
 
-{% block menmber_title %}订单评价{% endblock %}
+{% block member_title %}订单评价{% endblock %}
 
-{% block menmber %}
+{% block member %}
 
 {% for ordersku in page_obj %}
 <div class="box has-background-primary-light" id="skuComment{{ ordersku.id }}">

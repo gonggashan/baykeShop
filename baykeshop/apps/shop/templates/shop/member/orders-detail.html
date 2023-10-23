@@ -1,4 +1,4 @@
-{% extends 'shop/menmber/menmber.html' %}
+{% extends 'shop/member/member.html' %}
 
 {% load shoptags %}
 
@@ -14,7 +14,7 @@
 {% endblock %}
 
 
-{% block menmber %}
+{% block member %}
 {% ordersku order.baykeshopordersku_set.all as order_compute %}
 <div class="box is-radiusless is-marginless pt-6" id="orderStatus">
     <b-steps v-model="activeStep" :has-navigation="false">

@@ -274,9 +274,9 @@ class BaykeShopOrderCashDetailView(LoginRequiredMixin, DetailView):
         return context
     
 
-class BaykeUserMenmberView(LoginRequiredMixin, TemplateView):
+class BaykeUserMemberView(LoginRequiredMixin, TemplateView):
     """ 个人中心 """
-    template_name = "shop/menmber/menmber.html"
+    template_name = "shop/member/member.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -290,14 +290,14 @@ class BaykeAddressView(BaykeAddressViewSet):
     
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
-        response.template_name = "shop/menmber/address.html"
+        response.template_name = "shop/member/address.html"
         return response
     
 
 class BaykeShopOrderListView(LoginRequiredMixin, ListView):
     """ 我的订单 """
     model = BaykeShopOrder
-    template_name = "shop/menmber/orders.html"
+    template_name = "shop/member/orders.html"
     paginate_by = 5
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -316,7 +316,7 @@ class BaykeShopOrderListView(LoginRequiredMixin, ListView):
 class BaykeShopOrderDetailView(LoginRequiredMixin, DetailView):
     """ 订单详情 """
     model = BaykeShopOrder
-    template_name = "shop/menmber/orders-detail.html"
+    template_name = "shop/member/orders-detail.html"
     context_object_name = "order"
 
     def get_queryset(self) -> QuerySet[Any]:
@@ -331,7 +331,7 @@ class BaykeShopOrderDetailView(LoginRequiredMixin, DetailView):
 class BaykeUserBalanceLogTemplateView(LoginRequiredMixin, TemplateView):
     """ 余额变动记录日志 """
 
-    template_name = "shop/menmber/balance.html"
+    template_name = "shop/member/balance.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -348,7 +348,7 @@ class BaykeUserBalanceLogTemplateView(LoginRequiredMixin, TemplateView):
 class BaykeShopOrderCommentView(LoginRequiredMixin, SingleObjectMixin, ListView):
     """ 订单评价 """
 
-    template_name = "shop/menmber/comment.html"
+    template_name = "shop/member/comment.html"
     paginate_by = 1000
 
     def get(self, request, *args, **kwargs):    

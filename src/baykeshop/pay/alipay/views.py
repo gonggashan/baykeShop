@@ -64,7 +64,7 @@ class BaykeUserBalanceCallBackView(LoginRequiredMixin, AliPayCallBackView):
                 change_way=1
             )
             messages.success(request, '充值成功！')
-        return redirect('shop:menmber')
+        return redirect('shop:member')
     
     def post(self, request, *args, **kwargs):
         # 验签通过处理逻辑
