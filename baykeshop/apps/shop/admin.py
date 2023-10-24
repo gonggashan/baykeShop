@@ -150,6 +150,9 @@ class BaykeShopOrderAdmin(ModelAdmin):
         if obj and obj.status == 1:
             return True
         return False
+    
+    def has_add_permission(self, request: HttpRequest) -> bool:
+        return False
 
 
 # @admin.register(BaykeShopOrderSKU)
