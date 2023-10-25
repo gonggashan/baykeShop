@@ -11,16 +11,25 @@
 from django.contrib import admin
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
+from baykeshop.conf import bayke_settings
 
 from .forms import AdminLoginForm
 
 
 class AdminSite(admin.AdminSite):
     """ 自定义AdminSite """
-    site_header = gettext_lazy("baykeShop")
-    site_title = gettext_lazy("baykeShop")
-    index_title = gettext_lazy("baykeshop")
+    site_header = gettext_lazy(bayke_settings.SITE_HEADER)
+    site_title = gettext_lazy(bayke_settings.SITE_TITLE)
+    index_title = gettext_lazy(bayke_settings.INDEX_TITLE)
 
     login_form = AdminLoginForm
     login_template = "system/login.html"
     index_template = "system/index.html"
+    
+    
+    def get_app_list(self, request, app_label=None):
+        if bayke_settings.CUSTOM_MENU:
+            from baykeshop.common.menus import MenusMixins
+            menu = MenusMixins()
+            return menu.get_menus(request)
+        return super().get_app_list(request)

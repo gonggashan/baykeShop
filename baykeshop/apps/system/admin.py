@@ -8,8 +8,9 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 # Register your models here.
 from baykeshop.common.options import ModelAdmin
+from baykeshop.conf import bayke_settings
 from .models import (
-    BaykeADPosition, BaykeADSpace, BaykeComment
+    BaykeADPosition, BaykeADSpace, BaykeComment, BaykeSiteMenus
 )
 
 
@@ -86,3 +87,11 @@ class BaykeCommentAdmin(admin.ModelAdmin):
     
     def has_change_permission(self, request: HttpRequest, obj=None) -> bool:
         return False
+    
+
+if bayke_settings.CUSTOM_MENU:
+    @admin.register(BaykeSiteMenus)
+    class BaykeSiteMenusAdmin(ModelAdmin):
+        '''Admin View for BaykeSiteMenus'''
+
+        list_display = ('id', 'name', 'parent', 'permission', 'add_date')
