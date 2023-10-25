@@ -5,6 +5,7 @@ from django.http.request import HttpRequest
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Register your models here.
 from baykeshop.common.options import ModelAdmin, TabularInline, StackedInline
@@ -132,6 +133,7 @@ class BaykeShopOrderAdmin(ModelAdmin):
         my_urls = [path("sendGoods/<int:pk>/", self.admin_site.admin_view(self.send_goods), name='send_goods')]
         return my_urls + urls
 
+    @staff_member_required
     def send_goods(self, request, pk):
         # 订单发货操作
         obj = get_object_or_404(BaykeShopOrder, pk=pk)

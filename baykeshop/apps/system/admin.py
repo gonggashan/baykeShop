@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib import admin
 from django.http.request import HttpRequest
 from django.urls.resolvers import URLPattern
@@ -6,6 +5,7 @@ from django.template.response import TemplateResponse
 from django.utils.html import format_html
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 # Register your models here.
 from baykeshop.common.options import ModelAdmin
 from baykeshop.conf import bayke_settings
@@ -67,6 +67,7 @@ class BaykeCommentAdmin(admin.ModelAdmin):
         ]
         return my_urls + urls
     
+    @staff_member_required
     def reply_view(self, request, comment_id=None):
         obj = get_object_or_404(BaykeComment, id=comment_id)
         context = dict(
