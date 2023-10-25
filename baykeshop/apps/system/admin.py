@@ -6,6 +6,8 @@ from django.utils.html import format_html
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 # Register your models here.
 from baykeshop.common.options import ModelAdmin
 from baykeshop.conf import bayke_settings
@@ -67,7 +69,8 @@ class BaykeCommentAdmin(admin.ModelAdmin):
         ]
         return my_urls + urls
     
-    @staff_member_required
+    @method_decorator(staff_member_required)
+    @method_decorator(permission_required("system.reply_to_comments", raise_exception=True))
     def reply_view(self, request, comment_id=None):
         obj = get_object_or_404(BaykeComment, id=comment_id)
         context = dict(

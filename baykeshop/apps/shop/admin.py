@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 # Register your models here.
 from baykeshop.common.options import ModelAdmin, TabularInline, StackedInline
@@ -134,8 +135,8 @@ class BaykeShopOrderAdmin(ModelAdmin):
         my_urls = [path("sendGoods/<int:pk>/", self.admin_site.admin_view(self.send_goods), name='send_goods')]
         return my_urls + urls
 
-    @staff_member_required
-    @permission_required("shop.send_out_goods")
+    @method_decorator(staff_member_required)
+    @method_decorator(permission_required("shop.send_out_goods", raise_exception=True))
     def send_goods(self, request, pk):
         # 订单发货操作
         obj = get_object_or_404(BaykeShopOrder, pk=pk)
