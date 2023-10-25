@@ -294,6 +294,9 @@ class BaykeShopOrder(BaseModelMixin):
             models.UniqueConstraint(
                 'owner', 'order_sn', name='unique_owner_order'),
         ]
+        permissions = [
+            ("send_out_goods", "send out goods"),
+        ]
 
     def __str__(self):
         """Unicode representation of BaykeShopOrder."""

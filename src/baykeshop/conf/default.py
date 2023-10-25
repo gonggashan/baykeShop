@@ -17,6 +17,8 @@ DEFAULTS_CONF = {
     "SITE_TITLE": "baykeShop开源商城系统",
     # 站点头Logo
     "SITE_HEADER": "baykeShop Header",
+    # 首页title
+    "INDEX_TITLE": "baykeShop开源商城系统",
     # 数据表前缀
     "DB_PREFIX": "bayke",
     # 默认管理后台开启自定义菜单

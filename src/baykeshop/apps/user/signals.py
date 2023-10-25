@@ -19,14 +19,13 @@ from .models import BaykeUser
 def save_user_handler(sender, instance, created, **kwargs):
     # 同步创建一个用户的拓展字段
     if created:
-        user = BaykeUser(
-            owner=instance, 
-            name=instance.username
-        )
-        user.save()
+        try:
+            instance.baykeuser
+        except BaykeUser.DoesNotExist:
+            user = BaykeUser(
+                owner=instance, 
+                name=instance.username
+            )
+            user.save()
 
-    try:
-        instance.baykeuser
-    except BaykeUser.DoesNotExist:
-        print("未关联用户")
-        pass
+    

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 # Create your models here.
 from baykeshop.common.models import BaseModelMixin, ContentTypeAbstract
 
@@ -113,7 +114,34 @@ class BaykeComment(ContentTypeAbstract):
         ordering = ['-add_date']
         verbose_name = _("评论")
         verbose_name_plural = verbose_name
+        permissions = [
+            ("reply_to_comments", "Reply to comments"),
+        ]
 
     def __str__(self):
         """Unicode representation of BaykeComment."""
         return self.content
+    
+
+class BaykeSiteMenus(BaseModelMixin):
+    """ 后台管理菜单自定义 """
+    name = models.CharField(_("名称"), max_length=50, unique=True)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)
+    icon = models.CharField(_("图标"), max_length=50, blank=True, default="")
+    permission = models.OneToOneField(
+        Permission, 
+        on_delete=models.CASCADE, 
+        blank=True, 
+        null=True,
+        verbose_name=_("权限")
+    )
+
+    # TODO: Define fields here
+
+    class Meta:
+        ordering = ['-add_date']
+        verbose_name = 'SiteMenus'
+        verbose_name_plural = 'SiteMenus'
+
+    def __str__(self):
+        return self.name

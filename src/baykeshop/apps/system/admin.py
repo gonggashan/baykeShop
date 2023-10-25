@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib import admin
 from django.http.request import HttpRequest
 from django.urls.resolvers import URLPattern
@@ -6,10 +5,14 @@ from django.template.response import TemplateResponse
 from django.utils.html import format_html
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 # Register your models here.
 from baykeshop.common.options import ModelAdmin
+from baykeshop.conf import bayke_settings
 from .models import (
-    BaykeADPosition, BaykeADSpace, BaykeComment
+    BaykeADPosition, BaykeADSpace, BaykeComment, BaykeSiteMenus
 )
 
 
@@ -66,6 +69,8 @@ class BaykeCommentAdmin(admin.ModelAdmin):
         ]
         return my_urls + urls
     
+    @method_decorator(staff_member_required)
+    @method_decorator(permission_required("system.reply_to_comments", raise_exception=True))
     def reply_view(self, request, comment_id=None):
         obj = get_object_or_404(BaykeComment, id=comment_id)
         context = dict(
@@ -86,3 +91,11 @@ class BaykeCommentAdmin(admin.ModelAdmin):
     
     def has_change_permission(self, request: HttpRequest, obj=None) -> bool:
         return False
+    
+
+if bayke_settings.CUSTOM_MENU:
+    @admin.register(BaykeSiteMenus)
+    class BaykeSiteMenusAdmin(ModelAdmin):
+        '''Admin View for BaykeSiteMenus'''
+
+        list_display = ('id', 'name', 'parent', 'permission', 'add_date')

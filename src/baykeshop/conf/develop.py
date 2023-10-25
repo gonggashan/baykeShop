@@ -1,5 +1,6 @@
 from django.conf import settings
 
+settings.DEBUG = True
 
 settings.INSTALLED_APPS += [
     'baykeshop.common.AdminConfig',
