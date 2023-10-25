@@ -28,9 +28,9 @@
         <p>订单编号：{{ order.order_sn }}</p> 
         <p>实际支付：{{ order.total_price }}元</p>
         <p>收货信息：{{ order.address }}</p>
-        <p>支付状态：{{ order.get_status_display }}</p>
-        <p>支付方式：{{ order.get_paymethod_display }}</p>
-        <p>支付时间：{{ order.pay_time }}</p>
+        <!-- <p>支付状态：{{ order.get_status_display }}</p> -->
+        <!-- <p>支付方式：{{ order.get_paymethod_display }}</p> -->
+        <!-- <p>支付时间：{{ order.pay_time }}</p> -->
         <div class=" dropdown-divider"></div>
         {% for sku in order.baykeshopordersku_set.all %}
         <div class="columns">
