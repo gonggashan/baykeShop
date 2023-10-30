@@ -45,10 +45,16 @@ INSTALLED_APPS = [
 ## 项目urls.py中引入url
 
 ```python
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # baykeshop的全部url
     path('', include("baykeshop.urls")),
+    # 开发时静态文件配置
+    *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
+    *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ]
 ```
 
