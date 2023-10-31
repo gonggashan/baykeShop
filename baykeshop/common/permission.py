@@ -1,3 +1,15 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@文件    :permission.py
+@说明    :权限相关公共类
+@时间    :2023/10/31 10:02:53
+@作者    :幸福关中&轻编程
+@版本    :1.0
+@微信    :baywanyun
+'''
+
+
 from rest_framework import permissions
 
 class IsOwnerAuthenticated(permissions.IsAuthenticated):

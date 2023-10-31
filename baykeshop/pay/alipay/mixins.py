@@ -1,6 +1,18 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@文件    :mixins.py
+@说明    :支付宝验签
+@时间    :2023/10/31 10:07:40
+@作者    :幸福关中&轻编程
+@版本    :1.0
+@微信    :baywanyun
+'''
+
+
 from alipay.aop.api.util.SignatureUtils import verify_with_rsa
-from baykeshop.conf import bayke_settings
 from baykeshop.common.utils import get_cache_space
+
 
 class AlipayCallBackVerifySignMixin:
     """ 支付宝支付回调，验签 """
