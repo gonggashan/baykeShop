@@ -44,7 +44,7 @@ DEFAULTS_CONF = {
         "EMAIL_HOST": 'smtp.qq.com',
         "EMAIL_PORT": 465,
         "EMAIL_HOST_USER": '2539909370@qq.com',
-        "EMAIL_HOST_PASSWORD": 'fhrygoqlndmxebjf',
+        "EMAIL_HOST_PASSWORD": 'fhrygoqlndmxebjfzxc',
         "EMAIL_USE_SSL": True,
         "DEFAULT_FORM_EMAIL": '2539909370@qq.com'
     }

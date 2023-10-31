@@ -8,6 +8,18 @@
 @WX              :baywanyun
 '''
 
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@文件    :sites.py
+@说明    :自定义管理站点
+@时间    :2023/10/31 10:03:58
+@作者    :幸福关中&轻编程
+@版本    :1.0
+@微信    :baywanyun
+'''
+
+
 from django.contrib import admin
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy

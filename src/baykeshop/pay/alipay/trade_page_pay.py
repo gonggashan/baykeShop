@@ -1,3 +1,15 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@文件    :trade_page_pay.py
+@说明    :支付宝网页支付
+@时间    :2023/10/31 10:08:59
+@作者    :幸福关中&轻编程
+@版本    :1.0
+@微信    :baywanyun
+'''
+
+
 from alipay.aop.api.domain.AlipayTradePagePayModel import AlipayTradePagePayModel
 # from alipay.aop.api.domain.SettleDetailInfo import SettleDetailInfo
 # from alipay.aop.api.domain.SettleInfo import SettleInfo

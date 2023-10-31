@@ -7,6 +7,8 @@
 @EMAIL           :1158920674@qq.com
 @WX              :baywanyun
 '''
+
+
 from datetime import datetime
 from decimal import Decimal
 
@@ -21,7 +23,7 @@ from baykeshop.apps.user.models import BaykeUserBalanceLog
 from . import mixins
 
 
-class AliPayCallBackView(mixins.AlipayCallBackVerifySignMixin, View):
+class AliPayCallBackView(View, mixins.AlipayCallBackVerifySignMixin):
     """ PC支付宝支付成功回调 """
     
     def get(self, request, *args, **kwargs):

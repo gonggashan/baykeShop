@@ -1,10 +1,21 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@文件    :client.py
+@说明    :支付宝支付客户端方法
+@时间    :2023/10/31 10:09:37
+@作者    :幸福关中&轻编程
+@版本    :1.0
+@微信    :baywanyun
+'''
+
+
 import logging
 
 from django.conf import settings
 from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
 from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
 
-from baykeshop.conf import bayke_settings
 from baykeshop.common.utils import get_cache_space
 
 
