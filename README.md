@@ -14,6 +14,10 @@ baykeShop（拜客商城系统）是一款全开源Python栈商城系统，后�
 
 商城PC端前台：http://s.bayke.shop
 
+## 视频教程
+
+安装使用：https://www.bilibili.com/video/BV1ea4y1X72f/
+
 ## 安装
 
 ```python

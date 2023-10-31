@@ -1,5 +1,9 @@
 # baykeShop
 
+## 视频教程
+
+安装使用：https://www.bilibili.com/video/BV1ea4y1X72f/
+
 ## 安装
 
 ```python
