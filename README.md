@@ -1,6 +1,6 @@
 <div align="center">
 
-![baykeshop](baykeshop/apps/system/static/img/logo.png)
+![baykeshop](https://www.bayke.shop/img/logo.png)
 
 <h1>baykeShop开源商城系统</h1>
 
