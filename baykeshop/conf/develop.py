@@ -8,7 +8,7 @@ settings.INSTALLED_APPS += [
     'baykeshop.apps.article',
     'baykeshop.apps.system',
     'baykeshop.apps.shop',
-    'baykeshop.apps.stats',
+    # 'baykeshop.apps.stats',
     'rest_framework',
     'captcha',
     'tinymce',
