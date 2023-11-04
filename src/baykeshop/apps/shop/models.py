@@ -1,12 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 # Create your models here.
 from tinymce.fields import TinyMCEField
 from baykeshop.common.validators import validate_phone
 from baykeshop.common.models import BaseModelMixin
-from baykeshop.apps.stats.models import BaykeDataStats
+# from baykeshop.apps.stats.models import BaykeDataStats
 
 
 class BaykeShopCategory(BaseModelMixin):
@@ -98,22 +97,10 @@ class BaykeShopSPU(BaseModelMixin):
 
     @classmethod
     def get_hots(cls):
-        # 热门商品，按浏览量推荐
-        item = {}
-        queryset = cls.objects.filter(status=True)
-        content_type = ContentType.objects.get_for_model(BaykeShopSPU)
-        for spu in queryset:
-            stats = BaykeDataStats.objects.filter(
-                content_type=content_type, object_id=spu.id)
-            if spu.id not in item:
-                item[spu.id] = []
-                item[spu.id].append(stats.first().pv if stats.exists() else 0)
-            else:
-                item[spu.id].append(stats.first().pv if stats.exists() else 0)
-        sum_stats = {key: sum(value) for key, value in item.items()}
-        sort_stats = dict(
-            sorted(sum_stats.items(), key=lambda item: item[1], reverse=True))
-        return queryset.filter(id__in=list(sort_stats.keys())[:4])
+        # 热销商品，按销量统计
+        return cls.objects.filter(status=True).alias(
+            sales=models.Sum('baykeshopsku__sales')
+        ).annotate(sales=models.F('sales')).order_by('-sales')
 
 
 class BaykeShopSKU(BaseModelMixin):

@@ -10,7 +10,7 @@
         {% for subcate in category.baykearticlecategory_set.all %}
             <li>
                 <a href="{% url 'baykearticle:category-detail' subcate.id %}" 
-                    class="{% if object.id == subcate.id or subcate.id == object.category.id %} is-active {% endif %}">
+                    class="{% if object.category == subcate or object == subcate %} is-active {% endif %}">
                     {{ subcate.name }}
                 </a>
             </li>

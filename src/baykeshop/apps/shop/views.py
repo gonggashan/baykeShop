@@ -4,14 +4,12 @@ from django.db.models.query import QuerySet
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.functional import cached_property
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from rest_framework.renderers import TemplateHTMLRenderer
 # Create your views here.
 from baykeshop.common.mixins import LoginRequiredMixin
 from baykeshop.common.renderers import TemplateHTMLRenderer
 from baykeshop.apps.shop.api.views import BaykeAddressViewSet
-from baykeshop.apps.stats.models import BaykeDataStats
 from baykeshop.apps.user.models import BaykeUserBalanceLog
 from baykeshop.apps.system.models import (
     BaykeADPosition, BaykeComment, BaykeADSpace
@@ -173,41 +171,15 @@ class BaykeShopSPUDetailView(DetailView):
     context_object_name = "spu"
     template_name = "shop/detail.html"
 
-    def get(self, request, *args, **kwargs):
-        self.add_stats()
-        return super().get(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.get_object().title
-        context['pv'], context['uv'] = self.get_stats()
         context['spuhots'] = BaykeShopSPU.get_hots()
         context['comments'] = self.get_page_comments()
         return context
 
     def get_absolute_url(self):
         return reverse('shop:spu-detail', kwargs={'pk': self.pk})
-    
-    def add_stats(self):
-        # 新增当天统计数据
-        content_type = ContentType.objects.get_for_model(self.model)
-        clent_user, stats = BaykeDataStats.add_stats(
-            self.request, 
-            content_type, 
-            self.get_object().id, 
-            self.request.path_info
-        )
-        return stats
-    
-    def get_stats(self):
-        # 获取统计数据
-        content_type = ContentType.objects.get_for_model(self.model)
-        pv, uv = BaykeDataStats.get_stats(
-            content_type=content_type, 
-            object_id=self.get_object().id, 
-            tag=self.request.path_info
-        )
-        return pv, uv
     
     def get_comments(self):
         # 商品评价
