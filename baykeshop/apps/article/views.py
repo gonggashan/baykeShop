@@ -9,24 +9,15 @@ from .models import BaykeArticleContent, BaykeArticleCategory
 class BaykeArticleContentListView(ListView):
     """列表页
     """
-    model = BaykeArticleContent
+    queryset = BaykeArticleContent.objects.exclude(status=0)
     template_name = "article/list.html"
     paginate_by = 20
     paginate_orphans = 2
-    context_object_name = "article_list"
-
-    def get_queryset(self):
-        queryset = super().get_queryset().exclude(status=0)
-        return queryset
+    extra_context = {"title": "全部文章"}
     
     def paginate_queryset(self, queryset, page_size):
         page_size = int(self.request.GET.get('per_page', self.paginate_by))
         return super().paginate_queryset(queryset, page_size)
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['title'] = "全部文章"
-        return context
 
 
 class BaykeArticleCategoryDetailView(SingleObjectMixin, BaykeArticleContentListView):
@@ -36,6 +27,7 @@ class BaykeArticleCategoryDetailView(SingleObjectMixin, BaykeArticleContentListV
         SingleObjectMixin (_type_): _description_
         BaykeArticleContentListView (_type_): _description_
     """
+    
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=BaykeArticleCategory.objects.all())
         return super().get(request, *args, **kwargs)
