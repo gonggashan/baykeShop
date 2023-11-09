@@ -5,8 +5,8 @@
         <ul class="menu-list">
             {% for date in dates %}
             <li>
-                <a href="{% url 'baykearticle:archiv-list' date.year date.month %}" 
-                    class="{% if year == date.year and month == date.month %} is-active {% endif %}">
+                <a href="{% url 'baykearticle:archive-list' date.year date.month %}" 
+                    class="{% if month == date %} is-active {% endif %}">
                     {{ date }}
                 </a>
             </li>

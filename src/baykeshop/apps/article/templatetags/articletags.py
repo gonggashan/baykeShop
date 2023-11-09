@@ -31,21 +31,20 @@ def sidebar_category(context):
 @register.inclusion_tag('article/sidebar/archiving.html', takes_context=True)
 def sidebar_archiving(context):
     """ 文章归档 """
-    url_kwargs = context['view'].kwargs
     dates = BaykeArticleContent.objects.dates(field_name="add_date", kind="month")
     return {
         'dates':dates,
-        'year': int(url_kwargs['year']) if url_kwargs.get('year') else '',
-        'month': int(url_kwargs['month']) if url_kwargs.get('month') else ''
+        'month': context.get('month')
     }
 
 
-@register.inclusion_tag('article/sidebar/tags.html', takes_context=True)
-def sidebar_tags(context):
+@register.inclusion_tag('article/sidebar/tags.html')
+def sidebar_tags():
     """ 标签 """
-    url_kwargs = context['view'].kwargs
     return {
         'tags': BaykeArticleTags.objects.all(),
-        'tag_name': url_kwargs.get('tag', ''),
-        'colors': ['is-white', 'is-black', 'is-light', 'is-dark', 'is-primary', 'is-info', 'is-success', 'is-warning', 'is-danger'],
+        'colors': [
+            'is-white', 'is-black', 'is-light', 'is-dark', 
+            'is-primary', 'is-info', 'is-success', 'is-warning', 'is-danger'
+        ],
     }
