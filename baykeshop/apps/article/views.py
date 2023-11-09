@@ -1,9 +1,9 @@
 from typing import Any, Dict
-from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.dates import MonthArchiveView
 # Create your views here.
-from .models import BaykeArticleContent, BaykeArticleCategory
+from .models import BaykeArticleContent, BaykeArticleCategory, BaykeArticleTags
 
 
 class BaykeArticleContentListView(ListView):
@@ -14,18 +14,10 @@ class BaykeArticleContentListView(ListView):
     paginate_by = 20
     paginate_orphans = 2
     extra_context = {"title": "全部文章"}
-    
-    def paginate_queryset(self, queryset, page_size):
-        page_size = int(self.request.GET.get('per_page', self.paginate_by))
-        return super().paginate_queryset(queryset, page_size)
 
 
 class BaykeArticleCategoryDetailView(SingleObjectMixin, BaykeArticleContentListView):
     """分类列表页
-
-    Args:
-        SingleObjectMixin (_type_): _description_
-        BaykeArticleContentListView (_type_): _description_
     """
     
     def get(self, request, *args, **kwargs):
@@ -34,20 +26,15 @@ class BaykeArticleCategoryDetailView(SingleObjectMixin, BaykeArticleContentListV
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category"] = self.object
         context['title'] = self.object.name
         return context
 
     def get_queryset(self):
-        queryset = self.object.baykearticlecontent_set.filter(status=1)
-        return queryset
+        return self.object.baykearticlecontent_set.filter(status=1)
     
 
 class BaykeArticleContentDetailView(DetailView):
     """文章详情页
-
-    Args:
-        DetailView (_type_): _description_
     """
     model = BaykeArticleContent
     template_name = "article/detail.html"
@@ -59,34 +46,32 @@ class BaykeArticleContentDetailView(DetailView):
         context['article_previous'] = self.get_object().previous_article
         context['title'] = self.get_object().title
         return context
-    
 
-class BaykeArticleContentArchivingListView(BaykeArticleContentListView):
+
+class BaykeArticleContentMonthArchiveView(MonthArchiveView, BaykeArticleContentListView):
     """ 文章归档 """
+    date_field = "add_date"
+    allow_future = True
+    month_format = "%m"
     
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['title'] = f"{self.kwargs['year']}年{self.kwargs['month']}月的文章归档"
+        context['title'] = context.get('month')
         return context
+    
 
+class BaykeArticleTagsToArticleListView(SingleObjectMixin, BaykeArticleContentListView):
+    # 文章标签列表页
+    
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(BaykeArticleTags.objects.all())
+        return super().get(request, *args, **kwargs)
+    
     def get_queryset(self):
-        queryset = super().get_queryset().filter(
-            Q(add_date__year=self.kwargs['year']) &
-            Q(add_date__month=self.kwargs['month'])
-        )
-        return queryset
+        return self.object.baykearticlecontent_set.all()
     
-
-class BaykeArticleContentTagsListView(BaykeArticleContentListView):
-    """ 文章标签分类 """
-    
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['title'] = f"归属标签{self.kwargs['tag']}的文章"
+        context['title'] = self.object.name
         return context
-
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(tags__name=self.kwargs['tag'])
-        return queryset
-
 

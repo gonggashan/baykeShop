@@ -29,12 +29,14 @@
                         <a href="{% url 'baykearticle:content-detail' article.id %}">{{ article.title }}</a>
                     </h1>
                     <p class="subtitle has-text-grey" style="font-size: 14px;">
-                        分类：<a href="{% url 'baykearticle:category-detail' article.category.id %}">{{ article.category.name }}</a>
-                        时间：{{ article.pub_date|timesince }}前
+                        <span class="mr-3">
+                            分类:<a href="{% url 'baykearticle:category-detail' article.category.id %}">
+                            {{ article.category.name }}</a>
+                        </span>
+                        <span class="mr-3">时间:{{ article.add_date|timesince }}前</span>
                         {% if article.tags.count %}
-                        标签：{{ article.tags.all|join:',' }}
+                        <span class="mr-3">标签：{{ article.tags.all|join:',' }}</span>
                         {% endif %}
-                        {# 浏览量：{{ article.pv }} #}     
                     </p>
                     <p>{{ article.desc }}...</p>
                 </div>
