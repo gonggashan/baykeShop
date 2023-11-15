@@ -21,55 +21,55 @@
         </div>
         <div class="is-flex is-flex-wrap-wrap">
             <span class="has-text-grey-light">排序：</span>
-            {% if request.GET.ordering == '-price' %}
-            <a href="{{ request.path_info }}?ordering=price" 
-                class="pr-3 {% if 'price' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+            {% if sort_params == '-price' %}
+            <a href="?ordering=price" 
+                class="pr-3 {% if 'price' in sort_params %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
                 价格
-                {% if request.GET.ordering == '-price' %}
+                {% if sort_params == '-price' %}
                 <span class="icon"><i class="mdi mdi-arrow-down-bold-outline"></i></span>
                 {% endif %}
             </a>
             {% else %}
-            <a href="{{ request.path_info }}?ordering=-price" 
-                class="pr-3 {% if 'price' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+            <a href="?ordering=-price" 
+                class="pr-3 {% if 'price' in sort_params %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
                 价格
-                {% if request.GET.ordering == 'price' %}
+                {% if sort_params == 'price' %}
                 <span class="icon"><i class="mdi mdi-arrow-up-bold-outline"></i></span>
                 {% endif %}
             </a>
             {% endif %}
 
-            {% if request.GET.ordering == '-sales' %}
-            <a href="{{ request.path_info }}?ordering=sales" 
-                class="pr-3 {% if 'sales' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+            {% if sort_params == '-sales' %}
+            <a href="?ordering=sales" 
+                class="pr-3 {% if 'sales' in sort_params %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
                 销量
-                {% if request.GET.ordering == '-sales' %}
+                {% if sort_params == '-sales' %}
                 <span class="icon"><i class="mdi mdi-arrow-down-bold-outline"></i></span>
                 {% endif %}
             </a>
             {% else %}
-            <a href="{{ request.path_info }}?ordering=-sales" 
-                class="pr-3 {% if 'sales' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+            <a href="?ordering=-sales" 
+                class="pr-3 {% if 'sales' in sort_params %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
                 销量
-                {% if request.GET.ordering == 'sales' %}
+                {% if sort_params == 'sales' %}
                 <span class="icon"><i class="mdi mdi-arrow-up-bold-outline"></i></span>
                 {% endif %}
             </a>
             {% endif %}
 
-            {% if request.GET.ordering == '-add_date' %}
-                <a href="{{ request.path_info }}?ordering=add_date" 
-                    class="pr-3 {% if 'add_date' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+            {% if sort_params == '-add_date' %}
+                <a href="?ordering=add_date" 
+                    class="pr-3 {% if 'add_date' in sort_params %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
                     上架时间
-                    {% if request.GET.ordering == '-add_date' %}
+                    {% if sort_params == '-add_date' %}
                     <span class="icon"><i class="mdi mdi-arrow-down-bold-outline"></i></span>
                     {% endif %}
                 </a>
             {% else %}
-                <a href="{{ request.path_info }}?ordering=-add_date" 
-                    class="pr-3 {% if 'add_date' in request.GET.ordering %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
+                <a href="?ordering=-add_date" 
+                    class="pr-3 {% if 'add_date' in sort_params %}has-text-weight-bold  has-text-primary-dark {% else %} has-text-grey-darker {% endif %}">
                     上架时间
-                    {% if request.GET.ordering == 'add_date' %}
+                    {% if sort_params == 'add_date' %}
                     <span class="icon"><i class="mdi mdi-arrow-up-bold-outline"></i></span>
                     {% endif %}
                 </a>

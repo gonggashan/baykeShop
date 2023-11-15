@@ -24,9 +24,9 @@ DEFAULTS_CONF = {
     # 默认管理后台开启自定义菜单
     "CUSTOM_MENU": False,
     # 手机号验证正则
-    "REGEX_PHONE": "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$",
+    "REGEX_PHONE": r"^1[358]\d{9}$|^147\d{8}$|^176\d{8}$",
     # 邮箱验证正则
-    "REGEX_EMAIL": "^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$",
+    "REGEX_EMAIL": r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$",
     # 邮箱验证码过期时间
     "EMAIL_CODE_EXP": datetime.timedelta(seconds=300),
     # 验证码随机范围

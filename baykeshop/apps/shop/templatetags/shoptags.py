@@ -11,9 +11,7 @@ def spudata(spu):
     skus = spu.baykeshopsku_set.all()
     return {
         "img": skus.first().img.url,
-        "price": skus.first().price,
         "spu": spu,
-        "sales": skus.aggregate(Sum("sales")),
     }
 
 
