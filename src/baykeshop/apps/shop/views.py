@@ -20,7 +20,20 @@ from baykeshop.apps.shop.models import (
 )
 
 
-class HomeTemplateView(TemplateView):
+    
+class SPUAliasAnnotateMixin:
+    
+    def alias_annotate_queryset(self, queryset):
+        return queryset.alias(
+            price=models.Min('baykeshopsku__price'),
+            sales=models.Sum('baykeshopsku__sales')
+        ).annotate(
+            price=models.F('price'),
+            sales=models.F('sales')
+        )
+
+
+class HomeTemplateView(TemplateView, SPUAliasAnnotateMixin):
     """ 首页 """
     template_name = "shop/index.html"
 
@@ -36,9 +49,9 @@ class HomeTemplateView(TemplateView):
         cates = BaykeShopCategory.objects.filter(is_nav=True, parent__isnull=True)
         for cate in cates:
             subcates = cate.baykeshopcategory_set.filter(is_nav=True)
-            cate.spus = BaykeShopSPU.objects.filter(
-                category__in=subcates
-            ).distinct()[:10]
+            cate.spus = self.alias_annotate_queryset(
+                BaykeShopSPU.objects.filter(category__in=subcates).distinct()
+            )[:10]
         return cates
     
     @cached_property
@@ -59,22 +72,25 @@ class HomeTemplateView(TemplateView):
         return BaykeADPosition.get_position_spaces(slug="shophomebanner")
     
 
-class BaykeShopSPUListView(ListView):
+class BaykeShopSPUListView(ListView, SPUAliasAnnotateMixin):
     """ 全部商品 """
 
     model = BaykeShopSPU
     template_name = "shop/list.html"
     paginate_by = 20
+    paginate_orphans = 4
+    ordering = "add_date"
 
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = self.annotate_queryset(super().get_queryset().filter(status=True))
-        return self.ordering_queryset(queryset)
+        queryset = super().get_queryset().filter(status=True)
+        return self.alias_annotate_queryset(queryset)
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['parent_cates'] = self.get_baykeshopcategory
         context['sub_cates'] = self.get_baykeshopcategory_set
         context['title'] = "全部商品"
+        context['sort_params'] = self.get_sort_params
         return context
     
     @cached_property
@@ -92,22 +108,15 @@ class BaykeShopSPUListView(ListView):
                 .baykeshopcategory_set.filter(status=True)
         return queryset
     
-    def annotate_queryset(self, queryset):
-        return queryset.alias(
-            price=models.Min('baykeshopsku__price'),
-            sales=models.Sum('baykeshopsku__sales')
-        ).annotate(
-            price=models.F('price'),
-            sales=models.F('sales')
-        )
+    def alias_annotate_queryset(self, queryset):
+        # 对注解过的queryset进行排序
+        return super().alias_annotate_queryset(queryset).order_by(self.get_sort_params)
     
-    def ordering_queryset(self, queryset:annotate_queryset):
-        if self.request.GET.get('ordering'):
-            queryset = queryset.order_by(self.request.GET.get('ordering'))
-        else:
-            queryset = queryset.order_by("-add_date")
-        return queryset
-    
+    @cached_property
+    def get_sort_params(self):
+        # 排序字段
+        return self.request.GET.get('ordering', self.ordering)
+        
     def get_absolute_url(self):
         return reverse('shop:goods')
 
@@ -128,19 +137,18 @@ class BaykeShopCategoryDetailView(SingleObjectMixin, BaykeShopSPUListView):
         return context
 
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = self.annotate_queryset(self.object.baykeshopspu_set.filter(status=True))
+        queryset = self.object.baykeshopspu_set.filter(status=True)
         if self.object.parent is None:
-            queryset = self.annotate_queryset(BaykeShopSPU.objects.filter(
+            queryset = BaykeShopSPU.objects.filter(
                 status=True, 
                 category__in=self.object.baykeshopcategory_set.filter(status=True)
-            ))
-        return self.ordering_queryset(queryset)
+            )
+        return self.alias_annotate_queryset(queryset)
     
     @cached_property
     def get_baykeshopcategory_set(self):
-        if self.object.parent is None:
-            queryset = self.object.baykeshopcategory_set.filter(status=True)
-        else:
+        queryset = self.object.baykeshopcategory_set.filter(status=True)
+        if self.object.parent:
             queryset = self.object.parent.baykeshopcategory_set.filter(status=True)
         return queryset
     

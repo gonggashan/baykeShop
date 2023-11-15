@@ -11,9 +11,7 @@ def spudata(spu):
     skus = spu.baykeshopsku_set.all()
     return {
         "img": skus.first().img.url,
-        "price": skus.first().price,
         "spu": spu,
-        "sales": skus.aggregate(Sum("sales")),
     }
 
 
@@ -64,12 +62,14 @@ def ordersku_func(ordersku_queryset):
 def ordersku(ordersku_queryset):
     return ordersku_func(ordersku_queryset)
 
+
 @register.inclusion_tag('shop/member/action.html')
 def order_action(order):
     ordersku_queryset = order.baykeshopordersku_set.all()
     context = ordersku_func(ordersku_queryset)
     context['order'] = order
     return context
+
 
 @register.simple_tag
 def comments_score(spu):
