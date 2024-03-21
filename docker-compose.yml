@@ -7,17 +7,6 @@ services:
       - .:/usr/src/app
     ports:
       - "8000:8000"
+      - "8001:8001"
     environment:
       TZ: Asia/Shanghai
-
-  sqlite-web:
-    image: coleifer/sqlite-web
-    ports:
-      - "8081:8080"
-    volumes:
-      - .:/usr/src/app
-    environment:
-      DATABASE: /usr/src/app/db.sqlite3
-      TZ: Asia/Shanghai
-    depends_on:
-      - web
