@@ -58,7 +58,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     # baykeshop的全部url
     path('', include("baykeshop.urls")),
     # 开发时静态文件配置
