@@ -12,7 +12,7 @@ echo "初始化必要数据 成功"
 
 # 数据库面板
 echo "启动 数据库面板"
-sqlite_web ./db.sqlite3 -p 8001 -H 0.0.0.0 &
+sqlite_web ./db.sqlite3 -p 8001 -H 0.0.0.0 > sqlite_web.log 2>&1 &
 
 # 启动 Django 应用
 echo "Starting Django application"

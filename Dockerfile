@@ -1,5 +1,5 @@
 # 使用官方 Python 运行时作为父镜像
-FROM python:3.10
+FROM python:3.9.6
 
 # 设置时区为上海时间
 ENV TZ=Asia/Shanghai
