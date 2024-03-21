@@ -23,6 +23,7 @@ RUN chmod +x entrypoint.sh
 
 # 暴露端口 8000 供访问
 EXPOSE 8000
+EXPOSE 8001
 
 # 设置启动脚本为入口点
 ENTRYPOINT ["./entrypoint.sh"]
