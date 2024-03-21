@@ -1,3 +1,4 @@
+docker-compose build  启动项目
 <div align="center">
 
 ![baykeshop](https://www.bayke.shop/img/logo.png)

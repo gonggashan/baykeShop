@@ -80,6 +80,17 @@ DATABASES = {
     }
 }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'django_db',
+#        'USER': 'django',
+#        'PASSWORD': 'django_pass',
+#        'HOST': 'db',  # 确保这里使用的是 docker-compose 中定义的 MySQL 服务名称
+#        'PORT': '3306',  # 默认 MySQL 端口
+#    }
+#}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
