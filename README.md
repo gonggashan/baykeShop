@@ -1,4 +1,6 @@
-docker-compose build  启动项目
+docker-compose build  构建项目
+docker-compose up     启动项目
+
 <div align="center">
 
 ![baykeshop](https://www.bayke.shop/img/logo.png)
