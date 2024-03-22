@@ -31,7 +31,7 @@ class BaykeUser(BaseModelMixin):
     about = models.CharField(
         _("简介"), 
         max_length=150,
-        default="我喜欢baykeshop这个程序！", 
+        default="菲律賓没有雪 , 馬尼拉没有愛", 
         blank=True
     )
     avatar = models.ImageField(

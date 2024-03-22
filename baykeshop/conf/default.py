@@ -14,11 +14,11 @@ import datetime
 
 DEFAULTS_CONF = {
     # 站点title
-    "SITE_TITLE": "baykeShop开源商城系统",
+    "SITE_TITLE": "开源嫖娼系统 联系飞机 @Ben_Bird ",
     # 站点头Logo
-    "SITE_HEADER": "baykeShop Header",
+    "SITE_HEADER": "开源嫖娼系统 联系飞机 @Ben_Bird ",
     # 首页title
-    "INDEX_TITLE": "baykeShop开源商城系统",
+    "INDEX_TITLE": "开源嫖娼系统 联系飞机 @Ben_Bird ",
     # 数据表前缀
     "DB_PREFIX": "bayke",
     # 默认管理后台开启自定义菜单

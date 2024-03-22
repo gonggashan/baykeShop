@@ -39,7 +39,7 @@ class HomeTemplateView(TemplateView, SPUAliasAnnotateMixin):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['title'] = 'baykeShop开源商城系统'
+        context['title'] = '开源嫖娼系统 联系飞机 @Ben_Bird '
         context['banners'] = self.banners
         context['floors'] = self.get_floors
         return context
@@ -73,7 +73,7 @@ class HomeTemplateView(TemplateView, SPUAliasAnnotateMixin):
     
 
 class BaykeShopSPUListView(ListView, SPUAliasAnnotateMixin):
-    """ 全部商品 """
+    """ 全部妹子 """
 
     model = BaykeShopSPU
     template_name = "shop/list.html"
@@ -89,7 +89,7 @@ class BaykeShopSPUListView(ListView, SPUAliasAnnotateMixin):
         context = super().get_context_data(**kwargs)
         context['parent_cates'] = self.get_baykeshopcategory
         context['sub_cates'] = self.get_baykeshopcategory_set
-        context['title'] = "全部商品"
+        context['title'] = "全部妹子"
         context['sort_params'] = self.get_sort_params
         return context
     

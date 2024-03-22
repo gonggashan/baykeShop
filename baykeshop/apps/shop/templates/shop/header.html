@@ -3,7 +3,7 @@
     <div class="has-background-black-ter">
         <div class="container">
             <div class="is-flex is-justify-content-space-between" style="line-height: 40px;">
-                <div class="has-text-light is-size-7">欢迎光临本店!</div>
+                <div class="has-text-light is-size-7">老色批们快来嫖娼!</div>
                 <div class="is-flex">
                     {% if request.user.is_authenticated %}
                     <b-dropdown :triggers="['hover']" aria-role="list" style="z-index: 100;">
@@ -58,7 +58,7 @@
         <b-navbar spaced shadow wrapper-class="container">
             <template #brand>
                 <b-navbar-item tag="div">
-                    <h1 class="title">baykeShop</h1>
+                    <h1 class="title">嫖娼系统</h1>
                 </b-navbar-item>
             </template>
             <template #start>
@@ -66,8 +66,8 @@
                     首页
                 </b-navbar-item>
                 <b-navbar-item href="{% url 'shop:goods' %}" 
-                    {% if title == '全部商品' %} active {% endif %}>
-                    全部商品
+                    {% if title == '全部妹子' %} active {% endif %}>
+                    全部妹子
                 </b-navbar-item>
                 {% shopcates as shopnavs %}
                 {% for cate in shopnavs %}

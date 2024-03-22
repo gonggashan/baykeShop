@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50, verbose_name='姓名')),
                 ('phone', models.CharField(blank=True, default='', max_length=11, validators=[baykeshop.common.validators.validate_phone], verbose_name='手机号')),
                 ('sex', models.PositiveSmallIntegerField(choices=[(0, '未知'), (1, '男'), (2, '女')], default=0, verbose_name='性别')),
-                ('about', models.CharField(blank=True, default='我喜欢baykeshop这个程序！', max_length=150, verbose_name='简介')),
+                ('about', models.CharField(blank=True, default='菲律賓没有雪 , 馬尼拉没有愛', max_length=150, verbose_name='简介')),
                 ('avatar', models.ImageField(blank=True, max_length=200, null=True, upload_to='avatar/', verbose_name='头像')),
                 ('balance', models.DecimalField(blank=True, decimal_places=2, default=0, max_digits=8, verbose_name='余额')),
                 ('owner', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='用户')),

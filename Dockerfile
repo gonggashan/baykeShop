@@ -21,14 +21,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 现在复制项目文件到容器内，这样当项目文件变化时不会重新安装未变的依赖
 COPY . .
 
-# 应用数据库迁移，初始化必要数据，并设置数据库面板
-# 使用 && 连接命令减少镜像层的数量，使镜像更轻量
-RUN python manage.py migrate --noinput && \
-    python manage.py initdata && \
-    (sqlite_web ./db.sqlite3 -p 8001 -H 0.0.0.0 > sqlite_web.log 2>&1 &)
+# 将入口脚本复制到容器内
+COPY entrypoint.sh /usr/src/app/entrypoint.sh
 
-# 暴露端口 8000 和 8001 供访问
-EXPOSE 8000 8001
+# 使入口脚本可执行
+RUN chmod +x /usr/src/app/entrypoint.sh
 
-# 使用 CMD 而不是 exec，这是 Dockerfile 中推荐的方式启动服务
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# 使用入口脚本作为容器启动命令
+CMD ["/usr/src/app/entrypoint.sh"]
