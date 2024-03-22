@@ -4,4 +4,4 @@ docker-compose up     启动项目
 root
 123456
 
-
+![avatar](/效果图.png)
