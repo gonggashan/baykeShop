@@ -27,5 +27,8 @@ RUN python manage.py collectstatic --noinput --clear
 # 执行数据库迁移。
 RUN python manage.py migrate --noinput
 
+# 创建超级用户
+RUN python manage.py create_superuser
+
 # 运行 Gunicorn 作为项目的 WSGI 服务器。
 CMD ["gunicorn", "baykeproject.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
