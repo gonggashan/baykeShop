@@ -9,8 +9,8 @@ echo "Collect static files"
 python manage.py collectstatic --noinput --clear
 
 # Initialize necessary data
-echo "Initialize necessary data"
-python manage.py initdata
+#echo "Initialize necessary data"
+#python manage.py initdata
 
 # Start sqlite_web
 echo "Starting sqlite_web for database panel"
