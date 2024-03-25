@@ -26,3 +26,5 @@ typing_extensions==4.7.1
 tzdata==2023.3
 Werkzeug==3.0.1
 zipp==3.18.1
+uvicorn[standard]==0.21.0
+gunicorn==21.2.0
