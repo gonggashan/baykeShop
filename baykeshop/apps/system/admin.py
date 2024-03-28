@@ -29,18 +29,23 @@ class BaykeADSpaceAdmin(ModelAdmin):
     '''Admin View for BaykeADSpace'''
 
     list_display = ('id', 'slug', 'name', 'position', 'remark', 'add_date')
-    # prepopulated_fields = {'slug': ('name',),}
     list_display_links = ('id', 'slug', )
     list_filter = ('position',)
 
     def get_readonly_fields(self, request: HttpRequest, obj=None):
-        if obj and obj.space == 'text':
-            self.readonly_fields = ('html', 'img', 'slug')
-        elif obj and obj.space == 'html':
-            self.readonly_fields = ('text', 'img', 'target', 'slug')
-        elif obj and obj.space == 'img':
-            self.readonly_fields = ('text', 'html', 'slug')
-        return super().get_readonly_fields(request, obj)
+        if obj:  # 如果对象已经存在，不允许编辑 slug
+            return ('slug',) + self.get_space_dependent_readonly_fields(obj)
+        return self.get_space_dependent_readonly_fields(obj)
+
+    def get_space_dependent_readonly_fields(self, obj):
+        # 根据 space 类型返回相应的只读字段
+        if obj.space == 'text':
+            return ('html', 'img')
+        elif obj.space == 'html':
+            return ('text', 'img', 'target')
+        elif obj.space == 'img':
+            return ('text', 'html')
+        return ()
 
 
 @admin.register(BaykeComment)
